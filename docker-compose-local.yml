@@ -1,0 +1,12 @@
+services:
+  foodyeahproducts:
+    image: paymelater
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - MYSQL_PRODUCTS_JDBC_URL=jdbc:mysql://host.docker.internal:3306/paymelater?verifyServerCertificate=false&useSSL=false&useTimezone=true&serverTimezone=UTC
+      - MYSQL_PRODUCTS_JDBC_USER=root
+      - MYSQL_PRODUCTS_JDBC_PASSWORD=root
