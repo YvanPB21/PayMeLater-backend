@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Tag(name = "post", description = "Posts API")
+@Tag(name = "User")
 @RestController
 @RequestMapping("/api")
 public class UserController {
