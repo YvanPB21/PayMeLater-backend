@@ -29,4 +29,7 @@ public class User extends AuditModel {
 
     private Boolean islogged;
 
+
+
+
 }

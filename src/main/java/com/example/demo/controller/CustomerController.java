@@ -23,6 +23,10 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @GetMapping("/users/{userId}/customers")
+    public List<CustomerResource> getAllCustomersByUserId(@PathVariable(name = "userId") Integer userId) {
+        return customerService.getAllCustomersByUserId(userId).stream().map(this::convertToResource).collect(Collectors.toList());
+    }
 
     @GetMapping("/customers/{id}")
     public ResponseEntity<Customer>getById(@PathVariable Integer id){

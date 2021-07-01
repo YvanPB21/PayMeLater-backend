@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface CustomerService {
+    List<Customer> getAllCustomersByUserId(Integer userId);
     Customer getCustomer(Integer id);
     Customer createCustomer(Customer customer);
     Customer updateCustomer(Integer customerId, Customer customerDetails);
