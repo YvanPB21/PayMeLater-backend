@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Customer;
+import com.example.demo.model.Product;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,35 +17,18 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
-    public List<Customer> getAllCustomersByUserId(Integer userId) {
-        return customerRepository.findByUserId(userId);
+    public Customer getCustomer(Integer id) {
+            return customerRepository.findById(id).orElse(null);
+
     }
 
     @Override
-    public Customer getCustomerByIdAndUserId(Integer userId, Integer customerId) {
-        return customerRepository.findByIdAndUserId(userId, customerId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Customer not found with Id " + customerId +
-                                " and UserId " + userId));
+    public Customer createCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
-
     @Override
-    public Customer createCustomer(Integer userId, Customer customer) {
-        return userRepository.findById(userId).map(user -> {
-            customer.setUser(user);
-            return customerRepository.save(customer);
-        }).orElseThrow(() -> new ResourceNotFoundException(
-                "User", "Id", userId));
-    }
-
-    @Override
-    public Customer updateCustomer(Integer userId, Integer customerId, Customer customerDetails) {
-        if(!userRepository.existsById(userId))
-            throw new ResourceNotFoundException("User", "Id", userId);
+    public Customer updateCustomer(Integer customerId, Customer customerDetails) {
         return customerRepository.findById(customerId).map(customer -> {
             customer.setTopay(customerDetails.getTopay());
             customer.setTasa(customerDetails.getTasa());
@@ -62,11 +46,7 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public ResponseEntity<?> deleteCustomer(Integer userId, Integer customerId) {
-        return customerRepository.findByIdAndUserId(customerId, userId).map(customer -> {
-            customerRepository.delete(customer);
-            return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new ResourceNotFoundException(
-                "Customer not found with Id " + customerId + " and UserId " + userId));
+    public void deleteCustomer(Integer id) {
+        customerRepository.deleteById(id);
     }
 }

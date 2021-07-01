@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Customer;
+import com.example.demo.model.Product;
 import com.example.demo.resource.CustomerResource;
 import com.example.demo.resource.SaveCustomerResource;
 import com.example.demo.service.CustomerService;
@@ -21,34 +22,35 @@ public class CustomerController {
     
     @Autowired
     private CustomerService customerService;
-    @GetMapping("/users/{userId}/customers")
-    public List<CustomerResource> getAllCustomersByPostId(@PathVariable(name = "userId") Integer userId) {
-        return customerService.getAllCustomersByUserId(userId).stream().map(this::convertToResource).collect(Collectors.toList());
+
+
+    @GetMapping("/customers/{id}")
+    public ResponseEntity<Customer>getById(@PathVariable Integer id){
+        Customer customer=customerService.getCustomer(id);
+        if(customer==null)
+            return ResponseEntity.notFound().build();
+        else
+            return (ResponseEntity.ok(customer));
     }
 
-    @GetMapping("/users/{userId}/customers/{customerId}")
-    public CustomerResource getCustomerByIdAndPostId(@PathVariable(name = "userId") Integer userId,
-                                                   @PathVariable(name = "customerId") Integer customerId) {
-        return convertToResource(customerService.getCustomerByIdAndUserId(userId, customerId));
-    }
-
-    @PostMapping("/users/{userId}/customers")
-    public CustomerResource createCustomer(@PathVariable(name = "userId") Integer userId,
+    @PostMapping("/customers")
+    public CustomerResource createCustomer(
                                          @Valid @RequestBody SaveCustomerResource resource) {
-        return convertToResource(customerService.createCustomer(userId, convertToEntity(resource)));
+        return convertToResource(customerService.createCustomer(convertToEntity(resource)));
     }
 
-    @PutMapping("/users/{userId}/customers/{customerId}")
-    public CustomerResource updateCustomer(@PathVariable(name = "userId") Integer userId,
+    @PutMapping("/customers/{customerId}")
+    public CustomerResource updateCustomer(
                                          @PathVariable(name = "customerId") Integer customerId,
                                          @Valid @RequestBody SaveCustomerResource resource) {
-        return convertToResource(customerService.updateCustomer(userId, customerId, convertToEntity(resource)));
+        return convertToResource(customerService.updateCustomer(customerId, convertToEntity(resource)));
     }
 
-    @DeleteMapping("/users/{userId}/customers/{customerId}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable(name = "userId") Integer userId,
+    @DeleteMapping("/customers/{customerId}")
+    public ResponseEntity<?> deleteCustomer(
                                            @PathVariable(name = "customerId") Integer customerId) {
-        return customerService.deleteCustomer(userId, customerId);
+        customerService.deleteCustomer(customerId);
+        return ResponseEntity.noContent().build();
     }
 
     private Customer convertToEntity(SaveCustomerResource resource) {

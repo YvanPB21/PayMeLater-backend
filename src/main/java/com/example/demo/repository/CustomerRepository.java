@@ -9,6 +9,5 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-    List<Customer> findByUserId(Integer userId);
-    Optional<Customer> findByIdAndUserId(Integer id, Integer userId);
+
 }
