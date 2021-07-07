@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(User userDetails, Integer userId) {
        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
-       user.setEmail(user.getEmail());
-       user.setPassword(user.getPassword());
+       user.setEmail(userDetails.getEmail());
+       user.setPassword(userDetails.getPassword());
        return userRepository.save(user);
 
     }

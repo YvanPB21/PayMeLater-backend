@@ -42,7 +42,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<User> GetAllById(@PathVariable("id") Integer id){
         try{
             Optional<User> user = userService.getById(id);
@@ -55,7 +55,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping
+    @PostMapping("/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user, BindingResult result){
         if( result.hasErrors()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));

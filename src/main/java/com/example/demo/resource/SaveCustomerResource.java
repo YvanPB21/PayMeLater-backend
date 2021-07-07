@@ -28,4 +28,6 @@ public class SaveCustomerResource extends AuditModel {
     private String initialdate;
 
     private String endingdate;
+
+    private Integer userId;
 }
